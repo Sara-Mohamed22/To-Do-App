@@ -12,48 +12,52 @@ import 'package:todolist/share/constant.dart';
 
 
 
-class EditTaskScreen extends StatelessWidget {
-  final TaskModel? model ;
-  EditTaskScreen(this.model);
-  
+class EditSubTaskScreen extends StatelessWidget {
+  final TaskModel? submodel ;
+  EditSubTaskScreen(this.submodel);
+
   @override
   Widget build(BuildContext context) {
 
-    var nametaskController = TextEditingController(text:  model?.taskName);
-    var fromtaskController = TextEditingController(text: model?.fromdateTask);
-    var totaskController = TextEditingController(text:  model?.todateTask);
-    var taskDescriptionController = TextEditingController(text:  model?.taskDes);
-    var taskparentController = TextEditingController(text:  model?.taskParent );
+    var nametaskController = TextEditingController(text:  submodel?.taskName);
+    var fromtaskController = TextEditingController(text: submodel?.fromdateTask);
+    var totaskController = TextEditingController(text:  submodel?.todateTask);
+    var taskDescriptionController = TextEditingController(text:  submodel?.taskDes);
+    var taskparentController = TextEditingController(text:  submodel?.taskParent );
 
 
     return BlocConsumer<ToDoAppCubit , ToDoAppStates>(
       listener: (context , state){
 
-        if(state is EditTaskSuccessfulState )
-          {
-            showToast(message: 'Update Sucessfully' , state: ToastState.SUCCESS );
+        if( state is EditSubTaskSuccessfulState)
+        {
+          showToast(message: 'Update Sucessfully' , state: ToastState.SUCCESS );
 
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
 
 
-          }
-        else if (state is EditTaskErrorState )
-          {
-            showToast(message: 'Update Fail' , state: ToastState.ERROR );
+        }
+        else if (state is EditSubTaskErrorState)
+        {
+          showToast(message: 'Update Fail' , state: ToastState.ERROR );
 
-          }
+        }
       },
       builder: (context , state){
 
-        
-        return Scaffold(
+    print('submodel ${submodel?.taskId}');
+    print('submodel ${submodel?.taskName}');
+    print('submodel ${submodel?.taskParent}');
+    print('submodel ${submodel?.parentTaskId}');
+
+    return Scaffold(
             appBar: AppBar(
               leading: InkWell(
                 child: Icon(Icons.arrow_back_ios),
                 onTap: (){
                   Navigator.pop(context);
                 },),
-              title: Text('Edit Task'),
+              title: Text('Edit SubTask'),
             ),
             body: SingleChildScrollView(
               child: Padding(
@@ -189,20 +193,24 @@ class EditTaskScreen extends StatelessWidget {
                   SizedBox(height: 30,),
 
                   ConditionalBuilder(
-                    condition: state is !EditTaskLoadingState ,
+                    condition:  state is ! EditSubTaskLoadingState,
                     builder:(context)=> Container(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(onPressed: (){
 
-                                  ToDoAppCubit.get(context).editTask(
-                                      taskId: model?.taskId,
-                                      taskname: nametaskController.text,
-                                      totime: totaskController.text,
-                                      fromtime: fromtaskController.text,
-                                      taskDescription: taskDescriptionController.text);
+                            ToDoAppCubit.get(context).
+                            editSubTask(
+                              taskId: submodel?.taskId,
+                                taskname: nametaskController.text ,
+                                totime: totaskController.text ,
+                                fromtime: fromtaskController.text ,
+                                taskDescription: taskDescriptionController.text,
+                                parentTask: submodel?.taskParent,
+                                parentId: submodel?.parentTaskId
+                            );
 
-                              }, child: Text('Update'))),
+                        }, child: Text('Update'))),
                     fallback: (context)=> Center(child: CircularProgressIndicator()),
                   )
                 ],),

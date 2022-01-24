@@ -67,7 +67,6 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
     @required String? totime,
     @required String? fromtime,
     @required String? desc,
-    String? parentTask,
 
 
   }) {
@@ -78,9 +77,9 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
         todateTask:totime,
         fromdateTask:fromtime,
         taskDes:desc,
-        taskParent: parentTask ?? '',
+        taskParent: '',
         status: status.oncreate.name,
-        parentTaskId: ''
+        parentTaskId:'',
     );
 
     FirebaseFirestore.instance.collection('tasks').add(taskModel.toJson()).
@@ -140,13 +139,13 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
         element.reference.collection('subTasks').snapshots().
         listen((value) {
-         // subtasks = [];
+         //subtasks = [];
 
           value.docs.forEach((element) {
-
-            // subtasks.removeWhere((selement) =>
-            //   selement.taskId == TaskModel.fromJson(element.data()).taskId
-            // );
+             //
+             // subtasks.removeWhere((selement) =>
+             //   selement.taskId == TaskModel.fromJson(element.data()).taskId
+             // );
 
             subtasks.add(TaskModel.fromJson(element.data()));
 
@@ -317,7 +316,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
     @required String? totime,
     @required String? fromtime,
     @required String? taskDescription,
-    String? parentTask,
+    @required String? parentTaskId ,
 
   }) {
     emit(EditTaskLoadingState());
@@ -327,17 +326,19 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
       todateTask: totime,
       fromdateTask: fromtime,
       taskDes: taskDescription,
-      taskParent: parentTask ?? '',
-      status: 'oncreate',
+      taskParent: '',
+      status:'oncreate',
+      parentTaskId: parentTaskId ?? '' ,
+
 
     );
-    var updateTaskModel = taskEditModel.toJson();
 
-    updateTaskModel ['taskId'] = taskId;
-    print('taskId ${taskId}');
-    FirebaseFirestore.instance.collection('tasks').doc(taskId).update(updateTaskModel).
+     // var updateTaskModel = taskEditModel.toJson();
+    //
+    // updateTaskModel ['taskId'] = taskId;
+    // print('taskId ${taskId}');
+    FirebaseFirestore.instance.collection('tasks').doc(taskId).update(taskEditModel.toJson()).
     then((value) {
-      //  getAllTasks();
       emit(EditTaskSuccessfulState());
     }).
     catchError((e) {
@@ -345,6 +346,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
       emit(EditTaskErrorState());
     });
   }
+
 
   editSubTask({
     @required String? taskId,
@@ -357,7 +359,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
   }) {
     emit(EditSubTaskLoadingState());
-    TaskModel taskEditModel = TaskModel(
+    TaskModel subtaskEditModel = TaskModel(
       uid: uId,
       taskName: taskname,
       todateTask: totime,
@@ -368,14 +370,12 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
       status: 'oncreate',
 
     );
-    var updateTaskModel = taskEditModel.toJson();
-    updateTaskModel ['taskId'] = taskId;
-    print('taskId ${taskId}');
+    // var updateTaskModel = taskEditModel.toJson();
+    // updateTaskModel ['taskId'] = taskId;
+    // print('taskId ${taskId}');
     FirebaseFirestore.instance.collection('tasks').doc(parentId).collection('subTasks').
-    doc(taskId).update(updateTaskModel).
+    doc(taskId).update(subtaskEditModel.toJson()).
     then((value) {
-      // gatAllSubTasks();
-
       emit(EditSubTaskSuccessfulState());
     }).
     catchError((e) {
@@ -388,7 +388,6 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
     FirebaseFirestore.instance.collection('tasks').
     doc(model.taskId).update({'status': status.remove.name}).
     then((value) {
-      // getAllTasks();
       emit(DeleteTaskSuccessfulState());
     }).
     catchError((e) {
@@ -401,7 +400,6 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
     FirebaseFirestore.instance.collection('tasks').doc(model.parentTaskId).collection('subTasks').
     doc(model.taskId).update({'status': status.remove.name}).
     then((value) {
-      //    gatAllSubTasks();
       emit(DeleteSubTaskSuccessfulState());
     }).
     catchError((e) {

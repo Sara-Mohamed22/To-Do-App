@@ -8,6 +8,7 @@ import 'package:todolist/layout/to-do-cubit/ToDOAppStates.dart';
 import 'package:todolist/layout/to-do-cubit/ToDoAppCubit.dart';
 import 'package:todolist/model/taskModel.dart';
 import 'package:todolist/module/edit-task-screen/edit-task-screen.dart';
+import 'package:todolist/module/subTask/edit-subTask.dart';
 import 'package:todolist/module/subTask/subtask-screen.dart';
 import 'package:todolist/share/constant.dart';
 
@@ -418,7 +419,7 @@ class MyTasksScreen extends StatelessWidget {
                                         ),),*/
                                         SimpleDialogOption(onPressed: () {
                                           print('edit');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> EditTaskScreen(submodel)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> EditSubTaskScreen(submodel)));
                                         }, child: Row(
                                           children: [
                                             Icon(Icons.edit),

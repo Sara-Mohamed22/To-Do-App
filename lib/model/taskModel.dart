@@ -20,7 +20,8 @@ class TaskModel
   @required this.status ,
   @required this.taskName ,
   @required this.taskDes ,
-  @required this.todateTask});
+  @required this.todateTask ,
+  });
 
   Map<String , dynamic> toJson()
   {
