@@ -74,7 +74,7 @@ class MyTasksScreen extends StatelessWidget {
           return Scaffold(
 
             body:
-            noTask == true  ?
+            cubit.numofTasks == 0  ?
             Center(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -308,20 +308,7 @@ class MyTasksScreen extends StatelessWidget {
                       InkWell(
                           onTap: (){
                             print('done');
-                            /*  if(model.haveChild == true)
-                            {
-                              cubit.checkDoneTask(model);
 
-                            }
-                          else if(model.taskParent != '' &&  model.parentTaskId !='')
-                            {
-                              cubit.checkDonSubTask(model);
-                            }
-                          else if(model.taskParent == '' &&  model.parentTaskId =='')
-                            {
-                              cubit.checkDoneTask(model);
-
-                            }*/
 
                             cubit.checkDoneTask(model);
                           },

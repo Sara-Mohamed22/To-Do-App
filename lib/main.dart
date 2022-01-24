@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
       key: key,
       child:MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context)=> ToDoAppCubit()..getUserData()..getAllTasks()..gatAllSubTasks()
+          BlocProvider(create: (context)=> ToDoAppCubit()..getUserData()..getSubTasks()..getAllTasks()
           ),
         ],
         child: MaterialApp(
