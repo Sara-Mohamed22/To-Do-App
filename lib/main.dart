@@ -42,46 +42,27 @@ void main()async {
 }
 
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
 
   final Widget? start ;
 
   MyApp({@required this.start});
 
 
-  static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<_MyAppState>()?.restartApp();
-  }
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  Key key = UniqueKey();
-  void restartApp() {
-    setState(() {
-      key = UniqueKey();
-    });
-  }
-
-
   @override
   Widget build(BuildContext context) {
 
     return KeyedSubtree(
-      key: key,
       child:MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context)=> ToDoAppCubit()..getUserData(uId)..getSubTasks()..getAllTasks()
+          BlocProvider(create: (context)=> ToDoAppCubit()..getUserData()..getSubTasks()..getAllTasks()
           ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home:
           //SplashScreen() ,
-          widget.start,
+            start,
           theme:  ThemeData(
 
             primarySwatch: Colors.deepPurple,

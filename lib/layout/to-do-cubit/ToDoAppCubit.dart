@@ -22,23 +22,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
   UserModel? model;
 
-  /*void getUserData() {
-
-    emit(ToDoAppLoadingState());
-
-    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
-      model = UserModel.FromJson(value.data()!);
-
-      emit(AppGetUserSuccessfulState());
-
-    }).catchError((e){
-      emit(AppGetUserErrorState(e.toString()));
-    });
-
-
-  }*/
-
-  void getUserData(String uId) {
+  void getUserData() {
 
     emit(ToDoAppLoadingState());
 
@@ -53,6 +37,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
 
   }
+
 
 
   int currentIndex = 0;

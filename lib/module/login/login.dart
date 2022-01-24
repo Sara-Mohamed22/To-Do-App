@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
           {
             if(state is LoginSucessState )
                 {
-                   CashHelper.saveData(key: 'uId', value: state.uid).then((value) {
+                   CashHelper.saveData(key: 'uId', value: state.uid ).then((value) {
                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                      });
                  }
