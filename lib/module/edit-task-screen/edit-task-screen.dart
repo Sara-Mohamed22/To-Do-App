@@ -200,6 +200,7 @@ class EditTaskScreen extends StatelessWidget {
                                       taskname: nametaskController.text,
                                       totime: totaskController.text,
                                       fromtime: fromtaskController.text,
+                                      status: model?.status ,
                                       taskDescription: taskDescriptionController.text);
 
                               }, child: Text('Update'))),

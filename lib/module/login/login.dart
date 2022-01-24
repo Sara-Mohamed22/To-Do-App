@@ -127,7 +127,7 @@ class LoginScreen extends StatelessWidget {
                                   shape:  RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0), // <-- Radius
                                   ),
-                                  color: Colors.blueAccent,
+                                  color: Colors.deepPurple,
                                   onPressed: ()
                                   {
                                     if(formKey.currentState!.validate())

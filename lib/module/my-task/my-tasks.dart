@@ -28,40 +28,6 @@ class MyTasksScreen extends StatelessWidget {
 
     return BlocConsumer<ToDoAppCubit,ToDoAppStates>(
         listener:(context ,state){
-          // if(state is UpDateCompleteTaskSuccessfulState ||
-          //      state is DeleteTaskSuccessfulState ||
-          //      state is EditTaskSuccessfulState ||
-          //      state is UpDateCompleteSubTaskSuccessfulState
-          //  )
-          //    {
-          //      cubit.getAllTasks();
-          //    }
-          //////////////////////////////////////////
-
-          if(state is ToDoAppLoadingState)
-          {
-            cubit.getUserData();
-          }
-          if(cubit.alltasks.length !=0 || cubit.subtasks.length !=0
-          )
-          {
-
-
-            CashHelper.saveData(key: 'noTask', value: false).then((value) {
-              print('no post yet');
-            }).catchError((e){
-              print('error in num of post ${e.toString()}');
-            });
-
-          }
-          else
-          {
-            CashHelper.saveData(key: 'noTask', value: true).then((value) {
-              print('no post yet');
-            }).catchError((e){
-              print('error in num of post ${e.toString()}');
-            });
-          }
 
         } ,
         builder: (context ,state){
@@ -69,16 +35,15 @@ class MyTasksScreen extends StatelessWidget {
           print('length ${cubit.alltasks.length}');
           print('sublength ${cubit.subtasks.length}');
 
-          var noTask = CashHelper.getData(key: 'noTask');
 
           return Scaffold(
 
             body:
-            cubit.numofTasks == 0  ?
+            cubit.numofTasks == 0 && cubit.numofsubTasks ==0 ?
             Center(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.event_note_outlined , size: 45,color: Colors.blue,),
+                Icon(Icons.event_note_outlined , size: 45,color: Colors.deepPurple,),
                 SizedBox(height: 10,),
                 Text('No Tasks Yet, Please Add New Task'),
               ],
@@ -153,7 +118,7 @@ class MyTasksScreen extends StatelessWidget {
                         ),
 
                         ConditionalBuilder(
-                            condition: cubit.subtasks.length > 0   ,
+                            condition: cubit.subtasks.length >= 0   ,
                             builder: (context)=> Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20.0 ,horizontal: 8),
                               child: Column(

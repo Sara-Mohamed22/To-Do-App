@@ -207,7 +207,8 @@ class EditSubTaskScreen extends StatelessWidget {
                                 fromtime: fromtaskController.text ,
                                 taskDescription: taskDescriptionController.text,
                                 parentTask: submodel?.taskParent,
-                                parentId: submodel?.parentTaskId
+                                parentId: submodel?.parentTaskId,
+                              status :submodel?.status,
                             );
 
                         }, child: Text('Update'))),

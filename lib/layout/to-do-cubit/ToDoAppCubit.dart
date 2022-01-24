@@ -173,6 +173,7 @@ int numofTasks =0 ;
     @required String? fromtime,
     @required String? taskDescription,
     @required String? parentTaskId ,
+    @required String? status
 
   }) {
     emit(EditTaskLoadingState());
@@ -183,7 +184,7 @@ int numofTasks =0 ;
       fromdateTask: fromtime,
       taskDes: taskDescription,
       taskParent: '',
-      status:'oncreate',
+      status: status ,
       parentTaskId: parentTaskId ?? '' ,
 
 
@@ -295,7 +296,7 @@ int numofTasks =0 ;
   }
 
 
-
+  int numofsubTasks =0 ;
   void getSubTasks() {
     emit(GetSubTasksLoadingState());
     if(! subtasks.isEmpty)
@@ -306,6 +307,7 @@ int numofTasks =0 ;
 
       value.docs.forEach((element){
         subtasks.add(TaskModel.fromJson(element.data()));
+        numofsubTasks ++ ;
 
       });
 
@@ -341,6 +343,7 @@ int numofTasks =0 ;
     @required String? taskDescription,
     @required String? parentTask,
     @required String? parentId ,
+    @required String? status ,
 
   }) {
     emit(EditSubTaskLoadingState());
@@ -352,7 +355,7 @@ int numofTasks =0 ;
       taskDes: taskDescription,
       taskParent: parentTask ,
       parentTaskId:parentId ,
-      status: 'oncreate',
+      status: status ,
 
     );
 

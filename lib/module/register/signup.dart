@@ -164,7 +164,7 @@ class RegisterScreen extends StatelessWidget {
                               shape:  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0), // <-- Radius
                               ),
-                              color: Colors.blueAccent,
+                               color: Colors.deepPurple,
                               onPressed: ()
                               {
                                 if(_formKey.currentState!.validate())

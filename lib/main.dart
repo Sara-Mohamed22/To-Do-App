@@ -84,6 +84,7 @@ class _MyAppState extends State<MyApp> {
           widget.start,
           theme:  ThemeData(
 
+            primarySwatch: Colors.deepPurple,
               appBarTheme: AppBarTheme(
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 titleTextStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
