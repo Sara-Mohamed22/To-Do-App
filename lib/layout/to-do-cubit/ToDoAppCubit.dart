@@ -15,9 +15,6 @@ import 'ToDOAppStates.dart';
 
 
 
-
-
-
 class ToDoAppCubit extends Cubit<ToDoAppStates> {
   ToDoAppCubit() :super (ToDoAppInitializeState());
 
@@ -25,7 +22,23 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
   UserModel? model;
 
-  void getUserData() {
+  /*void getUserData() {
+
+    emit(ToDoAppLoadingState());
+
+    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+      model = UserModel.FromJson(value.data()!);
+
+      emit(AppGetUserSuccessfulState());
+
+    }).catchError((e){
+      emit(AppGetUserErrorState(e.toString()));
+    });
+
+
+  }*/
+
+  void getUserData(String uId) {
 
     emit(ToDoAppLoadingState());
 
@@ -40,6 +53,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
 
   }
+
 
   int currentIndex = 0;
   List<Widget> screens = [
