@@ -32,34 +32,42 @@ class RegisterScreen extends StatelessWidget {
         listener: (context,state){
           if(state is RegisterSucessState)
           {
-              CashHelper.saveData(key: 'uId', value:state.userData?.uId ).
+              CashHelper.saveData(key: 'uId', value:state.uid ).
               then((value) {
 
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
               });
-            }
+              showToast(message: 'Sucessfully' , state: ToastState.SUCCESS );
+
+          }
 
           if(state is RegisterErrorState)
             {
 
-              showToast(message:state.error.toString() , state: ToastState.ERROR );
+              showToast(message:state.error.split('[firebase_auth/email-already-in-use]')[1] ,
+                  state: ToastState.ERROR );
             }
 
         },
         builder: (context,state){
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              leading: Icon(Icons.arrow_back_ios),
+
+            ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(25.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:
                       [
-                        Text('Register' ,
-                            style: Theme.of(context).textTheme.headline5 ),
+                        Center(
+                          child: Text('Register' ,
+                              style: Theme.of(context).textTheme.headline5 ),
+                        ),
 
                         SizedBox(height: 20,),
                         TextFormField(

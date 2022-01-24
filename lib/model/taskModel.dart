@@ -26,14 +26,14 @@ class TaskModel
   {
     return {
 
-   'taskName' : taskName ,
-   'todateTask' : todateTask ,
-   'uid' : uid ,
-   'fromdateTask' : fromdateTask,
-   'taskDes'  : taskDes ,
-   'taskParent' : taskParent ,
-  'status'  : status ,
-   'parentTaskId' : parentTaskId ,
+   'taskname':taskName ,
+   'todateTask':todateTask ,
+   'uid':uid ,
+   'fromdateTask':fromdateTask,
+   'taskDes':taskDes ,
+   'taskParent':taskParent ,
+  'status':status ,
+   'parentTaskId':parentTaskId ,
 
     };
 
@@ -44,7 +44,7 @@ class TaskModel
   TaskModel.fromJson(Map<String , dynamic>json)
   {
 
-     taskName= json['taskName'] ;
+     taskName= json['taskname'] ;
      todateTask= json['todateTask'] ;
      uid = json['uid'];
      fromdateTask = json['fromdateTask'];

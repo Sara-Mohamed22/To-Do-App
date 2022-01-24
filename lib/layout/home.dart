@@ -26,7 +26,9 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text('${cubit.titles[cubit.currentIndex]}'),
           ),
-         ),
+            automaticallyImplyLeading: false,
+
+          ),
 
           body: ToDoAppCubit.get(context).screens[ToDoAppCubit.get(context).currentIndex],
 
@@ -38,9 +40,9 @@ class HomeScreen extends StatelessWidget {
               },
 
               items: [
-                BottomNavigationBarItem(icon: Icon(Icons.menu) , label: ''),
-                BottomNavigationBarItem(icon: Icon(Icons.add) , label: ''),
-                BottomNavigationBarItem(icon: Icon(Icons.person) , label: ''),
+                BottomNavigationBarItem(icon: Icon(Icons.menu , size: 30) , label: ''),
+                BottomNavigationBarItem(icon: Icon(Icons.add_circle , size: 60,) , label: ''),
+                BottomNavigationBarItem(icon: Icon(Icons.person , size: 30) , label: ''),
               ]
 
           ),

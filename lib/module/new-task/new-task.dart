@@ -1,13 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todolist/layout/to-do-cubit/ToDoAppCubit.dart';
+import 'package:intl/intl.dart';
 
 class NewTaskScreen extends StatelessWidget {
+
   const NewTaskScreen({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
+
+    var _formKey = GlobalKey<FormState>();
 
     var nametaskController = TextEditingController();
     var fromtaskController = TextEditingController();
@@ -18,88 +21,175 @@ class NewTaskScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: InkWell(
+            child: Icon(Icons.arrow_back_ios),
+        onTap: (){
+              Navigator.pop(context);
+        },),
         title: Text('New Task'),
       ),
-        body: Column(children: [
-      Form(child: Column(
-        children: [
-          TextFormField(
+        body:
 
-            controller: nametaskController ,
-            keyboardType: TextInputType.name ,
-            validator: (value){
-              if(value!.isEmpty) return 'Please enter your task name' ;
-            },
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Task Name')
-            ),
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0 , horizontal: 22),
+            child: Form(
+              key: _formKey,
+                child:
+            Column(
+              children: [
+                SizedBox(height: 20,),
+
+                TextFormField(
+
+                  controller: nametaskController ,
+                  keyboardType: TextInputType.name ,
+                  autofocus: true,
+                  validator: (value){
+                    if(value!.isEmpty) return 'Please enter your task name' ;
+                  },
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text('Task Name')
+                  ),
+                ),
+                SizedBox(height: 20,),
+
+                Container(
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.brown[50],
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+
+                    Expanded(
+                      child: Container(
+                        child:
+                        TextFormField(
+
+                          controller: fromtaskController,
+                          keyboardType: TextInputType.none,
+
+                          decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.calendar_today_outlined,
+
+                              ),
+                              hintText: 'from',
+
+                             border: InputBorder.none
+                          ),
+                          onTap: () async{
+
+                        showDatePicker(context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.parse('2022-10-18'),)
+                                .then((value) {
+                              print(DateFormat.yMMMd().format(value!));
+
+                              fromtaskController.text =
+                                  DateFormat('yy-MM-dd').format(value);
+                            }
+                            );
+                          },
+
+                          validator: (value) {
+                            if(value!.isEmpty) return 'Please enter your date'  ;
+                          },
+
+
+                        ),
+
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: TextFormField(
+                          keyboardType: TextInputType.none,
+                          controller: totaskController ,
+                          validator: (value){
+                            if(value!.isEmpty) return 'Please enter your date'  ;
+                          },
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              prefixIcon: Icon(Icons.calendar_today_outlined),
+                              hintText: 'to'
+
+                          ),
+                          onTap: () {
+                           showDatePicker(context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.parse('2022-10-18'),)
+                                .then((value) {
+                              print(DateFormat('yy-MM-dd').format(value!));
+                              totaskController.text = DateFormat('yy-MM-dd').format(value);
+
+                           }
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+
+                  ],),
+                ),
+
+                SizedBox(height: 20,),
+
+                TextFormField(
+
+                  controller: taskDescriptionController ,
+                  keyboardType: TextInputType.name ,
+                  maxLines: 4,
+                  validator: (value){
+                    if(value!.isEmpty) return 'Please enter your description' ;
+                  },
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text('Task Description')
+                  ),
+                ),
+                SizedBox(height: 20,),
+
+                TextFormField(
+                  readOnly: true,
+                  validator: (value){
+                    if(value!.isEmpty) return 'Please enter your task name' ;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Parent Task',
+                    border: InputBorder.none
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+                Container(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        ToDoAppCubit.get(context).createNewTask(
+                            taskname: nametaskController.text,
+                            totime: totaskController.text,
+                            fromtime: fromtaskController.text,
+                            desc: taskDescriptionController.text);
+                      }
+                    }
+                      , child: Text('Save')))
+
+
+
+              ],
+            )),
           ),
-          Row(children: [
-            TextFormField(
-
-              controller: fromtaskController ,
-              validator: (value){
-                if(value!.isEmpty) return 'Please enter your date' ;
-              },
-              decoration: InputDecoration(
-                //  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.calendar_today_outlined)
-              ),
-            ),
-            TextFormField(
-
-              controller: totaskController ,
-              validator: (value){
-                if(value!.isEmpty) return 'Please enter your date' ;
-              },
-              decoration: InputDecoration(
-                //  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.calendar_today_outlined)
-              ),
-            ),
-
-
-          ],),
-          TextFormField(
-
-            controller: taskDescriptionController ,
-            keyboardType: TextInputType.name ,
-            validator: (value){
-              if(value!.isEmpty) return 'Please enter your description' ;
-            },
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Task Description')
-            ),
-          ),
-
-          TextFormField(
-
-            validator: (value){
-              if(value!.isEmpty) return 'Please enter your task name' ;
-            },
-            decoration: InputDecoration(
-              hintText: 'Parent Task',
-              border: InputBorder.none
-            ),
-          ),
-          Container(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(onPressed: (){
-               ToDoAppCubit.get(context).createNewTask(
-                   taskname: nametaskController.text,
-                   totime: totaskController.text,
-                   fromtime: fromtaskController.text ,
-                   desc: taskDescriptionController.text);
-              }, child: Text('Save')))
-
-
-
-        ],
-      ))
-    ],));
+        )
+      ,
+        );
   }
 }

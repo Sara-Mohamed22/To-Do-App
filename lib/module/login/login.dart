@@ -40,18 +40,21 @@ class LoginScreen extends StatelessWidget {
             if (state is LoginErrorState)
               {
 
-                showToast(message:state.error.toString() , state: ToastState.ERROR );
+                showToast(message:state.error.toString() ,
+                    state: ToastState.ERROR );
 
               }
 
           } ,
           builder:(context , state){
             return     Scaffold(
-                appBar: AppBar() ,
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                ) ,
                 body:Center(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(25.0),
                       child: Form(
                         key: formKey ,
                         child: Column(

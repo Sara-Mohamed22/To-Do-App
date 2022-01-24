@@ -15,6 +15,7 @@ Map<String , dynamic> ToJson()
     "name" : name,
     "email" : email,
     "phone" : phone ,
+    "uId" : uId
 
   };
 

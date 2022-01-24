@@ -91,7 +91,7 @@ class MyTasksScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10 , horizontal: 10),
+                      margin: EdgeInsets.symmetric(vertical: 10 , horizontal: 15),
                       height: 100,
                       child: DatePicker(
                         DateTime.now(),
@@ -146,11 +146,8 @@ class MyTasksScreen extends StatelessWidget {
                               ),
                             ) ,
                             fallback: (context)=>
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 200),
-                                  child: Center(child:
-                                  CircularProgressIndicator(),
-                                  ),
+                                Center(child:
+                                CircularProgressIndicator(),
                                 )
                         ),
 
@@ -177,12 +174,13 @@ class MyTasksScreen extends StatelessWidget {
                               ),
                             ) ,
                             fallback: (context)=>
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 80),
-                                  child: Center(child:
-                                  CircularProgressIndicator(),
-                                  ),
-                                )
+                                 Padding(
+                                   padding: const EdgeInsets.all(30.0),
+                                   child: Center(child:
+                                    CircularProgressIndicator(),
+
+                                ),
+                                 )
                         ),
                       ],
                     ),
@@ -347,6 +345,8 @@ class MyTasksScreen extends StatelessWidget {
       ): SizedBox(height: 1,)
     //  Text('delete'),
   ) ;
+
+
 
   Widget subtaskItem(TaskModel submodel , ToDoAppCubit cubit ,context )=>  Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),

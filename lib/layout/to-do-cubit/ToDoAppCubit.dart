@@ -29,20 +29,11 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
     emit(ToDoAppLoadingState());
 
-    /* FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
-      model = UserModel.FromJson(value.data()!);
-
-      emit(AppGetUserSuccessfulState());
-    }).
-    catchError((e) {
-      print('Error ${e.toString()}');
-      emit(AppGetUserErrorState(e.toString()));
-    });*/
-
     FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
       model = UserModel.FromJson(value.data()!);
 
       emit(AppGetUserSuccessfulState());
+
     }).catchError((e){
       emit(AppGetUserErrorState(e.toString()));
     });
@@ -82,11 +73,11 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
   }) {
     emit(CreateNewTaskLoadingState());
     TaskModel taskModel = TaskModel(
-        uid: uId,
-        taskName: taskname,
-        todateTask: totime,
-        fromdateTask: fromtime,
-        taskDes: desc,
+        uid:uId,
+        taskName:taskname,
+        todateTask:totime,
+        fromdateTask:fromtime,
+        taskDes:desc,
         taskParent: parentTask ?? '',
         status: status.oncreate.name,
         parentTaskId: ''
@@ -130,6 +121,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
       alltasks.forEach((element) {
         print('@@ ${element.taskId}');
+
       });
       emit(GetAllTasksSuccessfulState());
 
@@ -148,7 +140,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
         element.reference.collection('subTasks').snapshots().
         listen((value) {
-          subtasks = [];
+         // subtasks = [];
 
           value.docs.forEach((element) {
 
@@ -340,6 +332,7 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
     );
     var updateTaskModel = taskEditModel.toJson();
+
     updateTaskModel ['taskId'] = taskId;
     print('taskId ${taskId}');
     FirebaseFirestore.instance.collection('tasks').doc(taskId).update(updateTaskModel).

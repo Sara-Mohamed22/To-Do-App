@@ -34,21 +34,28 @@ class RegisterCubit extends Cubit<RegisterState>
    ).
    then((value) {
      print('register sucessfully');
+    print('uiid ${value.user?.uid}');
 
      UserModel userData = UserModel(name: name, email: email, phone: phone, uId: value.user?.uid);
 
      FirebaseFirestore.instance.collection('users').doc(value.user?.uid).
      set(userData.ToJson()).
      then((value) {
-       emit(RegisterSucessState(userdata));
+       print('store user data sucessfully');
      }).
      catchError((error) {
        print('Error****');
        print(error.toString());
-       emit(RegisterErrorState(error.toString()));
      });
+
+     emit(RegisterSucessState(value.user?.uid));
+
    }
-   );
+   ).catchError((e){
+     print('Error****');
+     print(e.toString());
+     emit(RegisterErrorState(e.toString()));
+   });
   }
 
 
