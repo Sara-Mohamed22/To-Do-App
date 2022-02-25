@@ -1,8 +1,9 @@
 
-import 'package:flutter/cupertino.dart';
+
+
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:todolist/data/local/cashHelper.dart';
 import 'package:todolist/layout/home.dart';
 import 'package:todolist/module/register/signup.dart';
@@ -10,7 +11,6 @@ import 'package:todolist/share/component.dart';
 
 import 'cubit-login/LoginCubit.dart';
 import 'cubit-login/loginStates.dart';
-
 
 class LoginScreen extends StatelessWidget {
 
@@ -26,14 +26,14 @@ class LoginScreen extends StatelessWidget {
     var passwordController = TextEditingController();
 
 
-    return BlocProvider(
-        create: (BuildContext context) => LoginCubit(),
-        child:BlocConsumer< LoginCubit , LoginState > (
-          listener: (context , state)
+     return BlocConsumer< LoginCubit , LoginState > (
+
+    listener: (context , state)
           {
+
             if(state is LoginSucessState )
                 {
-                   CashHelper.saveData(key: 'uId', value: state.uid ).then((value) {
+                   CashHelper.saveData(key:'uId', value: state.uid ).then((value) {
                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                      });
                  }
@@ -95,6 +95,7 @@ class LoginScreen extends StatelessWidget {
                                 onFieldSubmitted: (value) {
                                   if (formKey.currentState!.validate()) {
                                     LoginCubit.get(context).UserLogin(email: usernameController.text,
+
                                         password: passwordController.text);
                                   }
                                 },
@@ -109,12 +110,14 @@ class LoginScreen extends StatelessWidget {
                                         onTap: (){
                                           print(LoginCubit.get(context).isHidden);
                                           LoginCubit.get(context).changevisibiliy() ;
+
                                         },
                                         child:
                                         LoginCubit.get(context).visible
 
 
-                                    ))) , SizedBox(height: 30,),
+
+                                ))) , SizedBox(height: 30,),
 
                             Container(
 
@@ -136,6 +139,7 @@ class LoginScreen extends StatelessWidget {
                                           email: usernameController.text ,
                                           password: passwordController.text
                                       );
+
 
 
 
@@ -175,7 +179,7 @@ class LoginScreen extends StatelessWidget {
                 )
             );
           }  ,
-        )
+
 
     );
   }

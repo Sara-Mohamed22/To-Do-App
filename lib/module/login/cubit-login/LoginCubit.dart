@@ -1,7 +1,9 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist/data/local/cashHelper.dart';
 import 'package:todolist/model/userModel.dart';
 
 import 'loginStates.dart';
@@ -11,6 +13,7 @@ class LoginCubit extends Cubit<LoginState>
 {
 
   UserModel? model ;
+
 
   LoginCubit() : super(LoginInitialState());
 
@@ -64,6 +67,9 @@ class LoginCubit extends Cubit<LoginState>
       emit(ShowHidden());
     }
   }
+
+
+
 
 
 }

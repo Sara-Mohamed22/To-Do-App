@@ -32,7 +32,7 @@ class RegisterScreen extends StatelessWidget {
         listener: (context,state){
           if(state is RegisterSucessState)
           {
-              CashHelper.saveData(key: 'uId', value:state.uid ).
+              CashHelper.saveData(key:'uId', value:state.uid).
               then((value) {
 
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));

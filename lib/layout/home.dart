@@ -12,6 +12,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     ToDoAppCubit cubit = ToDoAppCubit.get(context) ;
+
+    cubit.getUserData();
+   // cubit.getSubTasks();
+   // cubit.getAllTasks();
+
     return BlocConsumer<ToDoAppCubit ,ToDoAppStates >(
       listener:(context , state){
         if(state is NewTaskState)
@@ -20,6 +25,7 @@ class HomeScreen extends StatelessWidget {
           }
 
       } ,
+
       builder: (context , state){
         return Scaffold(
           appBar: AppBar(title: Padding(

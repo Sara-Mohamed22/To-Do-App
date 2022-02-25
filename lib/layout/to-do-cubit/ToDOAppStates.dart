@@ -10,6 +10,7 @@ class AppGetUserErrorState extends ToDoAppStates {
   AppGetUserErrorState(this.e);
 }
 
+
 class ChangeBottomNavigatorState extends ToDoAppStates {}
 class NewTaskState extends ToDoAppStates {}
 
@@ -59,4 +60,10 @@ class AddSubTasErrorState extends ToDoAppStates {
   final String? e ;
   AddSubTasErrorState(this.e);
 }
+
+
+class FilterTaskLoadingState extends ToDoAppStates {}
+class FilterTaskSuccessfulState extends ToDoAppStates {}
+
+
 

@@ -12,6 +12,10 @@ class RegisterSucessState extends RegisterState {
   RegisterSucessState(this.uid);
 }
 
+// class RegisterSucessState extends RegisterState {
+//   final UserModel? model ;
+//   RegisterSucessState(this.model);
+// }
 
 class RegisterErrorState extends RegisterState {
   final String error ;

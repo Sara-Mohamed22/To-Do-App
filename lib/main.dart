@@ -1,6 +1,7 @@
 
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:todolist/share/constant.dart';
 import 'data/local/cashHelper.dart';
 import 'layout/home.dart';
 import 'layout/to-do-cubit/ToDoAppCubit.dart';
+import 'module/login/cubit-login/LoginCubit.dart';
 import 'module/login/login.dart';
 import 'observer.dart';
 
@@ -21,8 +23,11 @@ void main()async {
 
   await CashHelper.init();
 
-  uId = CashHelper.getData(key: 'uId');
+  uId = CashHelper.getData(key:'uId');
+
   print('uid $uId');
+
+
 
   Widget? Start ;
 
@@ -33,7 +38,6 @@ void main()async {
 
   else
   {
-
     Start = LoginScreen();
   }
 
@@ -46,7 +50,7 @@ class MyApp extends StatelessWidget {
 
   final Widget? start ;
 
-  MyApp({@required this.start});
+  MyApp({@required this.start });
 
 
   @override
@@ -55,8 +59,10 @@ class MyApp extends StatelessWidget {
     return KeyedSubtree(
       child:MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context)=> ToDoAppCubit()..getUserData()..getSubTasks()..getAllTasks()
-          ),
+          // BlocProvider(create: (context)=> ToDoAppCubit()..getSubTasks()..getAllTasks()..getUserData()
+           BlocProvider(create: (context)=> ToDoAppCubit()..getSubTasks()..getAllTasks()
+    ),
+          BlocProvider(create: (context)=> LoginCubit() ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

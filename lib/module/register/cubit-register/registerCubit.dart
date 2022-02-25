@@ -18,6 +18,7 @@ class RegisterCubit extends Cubit<RegisterState>
 
   static RegisterCubit get(context) => BlocProvider.of(context) ;
 
+
   void UserRegister(
       {
         @required String? email ,
@@ -36,7 +37,7 @@ class RegisterCubit extends Cubit<RegisterState>
      print('register sucessfully');
     print('uiid ${value.user?.uid}');
 
-     UserModel userData = UserModel(name: name, email: email, phone: phone, uId: value.user?.uid);
+     UserModel   userData = UserModel(name: name, email: email, phone: phone, uId: value.user?.uid);
 
      FirebaseFirestore.instance.collection('users').doc(value.user?.uid).
      set(userData.ToJson()).
@@ -49,6 +50,7 @@ class RegisterCubit extends Cubit<RegisterState>
      });
 
      emit(RegisterSucessState(value.user?.uid));
+
 
    }
    ).catchError((e){

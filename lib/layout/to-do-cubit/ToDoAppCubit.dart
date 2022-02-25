@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist/data/local/cashHelper.dart';
 import 'package:todolist/model/taskModel.dart';
 import 'package:todolist/model/userModel.dart';
 import 'package:todolist/module/my-task/my-tasks.dart';
@@ -12,6 +14,8 @@ import 'package:todolist/module/profile/profile.dart';
 import 'package:todolist/share/constant.dart';
 
 import 'ToDOAppStates.dart';
+import 'package:intl/intl.dart';
+
 
 
 
@@ -22,21 +26,23 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
   UserModel? model;
 
+
   void getUserData() {
-
     emit(ToDoAppLoadingState());
-
     FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
       model = UserModel.FromJson(value.data()!);
 
       emit(AppGetUserSuccessfulState());
-
-    }).catchError((e){
+    }).catchError((e) {
+      print('error in get user ${e.toString()}');
       emit(AppGetUserErrorState(e.toString()));
     });
 
-
   }
+
+
+
+
 
 
 
@@ -119,7 +125,7 @@ int numofTasks =0 ;
       });
 
       alltasks.forEach((element) {
-        print('@@ ${element.taskId}');
+       // print('@@ ${element.taskId}');
 
       });
       emit(GetAllTasksSuccessfulState());
@@ -311,7 +317,7 @@ int numofTasks =0 ;
       });
 
       subtasks.forEach((element) {
-        print('## ${element.taskId}');
+      //  print('## ${element.taskId}');
 
       });
       emit(GetSubTasksSuccessfulState());
@@ -369,4 +375,40 @@ int numofTasks =0 ;
     });
   }
 
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+
+
+
+  List<TaskModel> AllTASKS =[];
+  filterationFunc( DateTime dt)
+  {
+    emit(FilterTaskLoadingState());
+   // AllTASKS = [] ;
+
+    if(! AllTASKS.isEmpty)
+      AllTASKS = [];
+
+    FirebaseFirestore.instance.collection('tasks').
+    where('uid' , isEqualTo: uId ).snapshots().listen((value) {
+      AllTASKS= [];
+
+      value.docs.forEach((element){
+        if(TaskModel.fromJson(element.data()).todateTask == DateFormat('yy-MM-dd').format(dt))
+          {
+            AllTASKS.add(TaskModel.fromJson(element.data()));
+          }
+
+
+      });
+
+       emit(FilterTaskSuccessfulState());
+        });
+    }
+
 }
+
+
+

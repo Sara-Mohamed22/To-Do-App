@@ -8,10 +8,11 @@ import 'package:todolist/layout/to-do-cubit/ToDOAppStates.dart';
 import 'package:todolist/layout/to-do-cubit/ToDoAppCubit.dart';
 import 'package:todolist/model/taskModel.dart';
 import 'package:todolist/module/edit-task-screen/edit-task-screen.dart';
+import 'package:todolist/module/my-task/subTaskShow-screen.dart';
 import 'package:todolist/module/subTask/edit-subTask.dart';
 import 'package:todolist/module/subTask/subtask-screen.dart';
 import 'package:todolist/share/constant.dart';
-
+import 'package:intl/intl.dart';
 
 
 
@@ -19,7 +20,6 @@ class MyTasksScreen extends StatelessWidget {
   const MyTasksScreen({Key? key}) : super(key: key);
 
 
-  @override
   Widget build(BuildContext context) {
 
     DatePickerController _controller = DatePickerController();
@@ -32,9 +32,8 @@ class MyTasksScreen extends StatelessWidget {
         } ,
         builder: (context ,state){
 
-          print('length ${cubit.alltasks.length}');
-          print('sublength ${cubit.subtasks.length}');
 
+        //  print('length ${cubit.alltasks.length}');
 
           return Scaffold(
 
@@ -60,7 +59,8 @@ class MyTasksScreen extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 10 , horizontal: 15),
                       height: 100,
                       child: DatePicker(
-                        DateTime.now(),
+                       // DateTime.now(),
+                        DateTime.parse('2022-01-01'),
                         width: 60,
                         height: 80,
                         controller: _controller,
@@ -68,21 +68,31 @@ class MyTasksScreen extends StatelessWidget {
                         selectionColor: Colors.deepPurple,
                         selectedTextColor: Colors.white,
                         inactiveDates: [
-                          DateTime.now().add(Duration(days: 3)),
+                      /*    DateTime.now().add(Duration(days: 3)),
                           DateTime.now().add(Duration(days: 4)),
-                          DateTime.now().add(Duration(days: 7))
+                          DateTime.now().add(Duration(days: 7))*/
                         ],
                         onDateChange: (date) {
 
+                         cubit.filterationFunc(date);
+
+
                         },
+
                       ), ),
                   ),
+
+                  cubit.AllTASKS.length !=0 ?
                   SingleChildScrollView(
                     child: Column(
                       children: [
                         ConditionalBuilder(
-                            condition: cubit.alltasks.length > 0   ,
-                            builder: (context)=> Padding(
+                         condition: cubit.alltasks.length > 0 ,
+                        //   condition: state is !FilterTaskLoadingState ,
+
+                            builder: (context) {
+                              print( '55 ${cubit.AllTASKS}');
+                              return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20.0 ,horizontal: 8),
                               child: Column(
                                 children: [
@@ -90,12 +100,19 @@ class MyTasksScreen extends StatelessWidget {
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (context , index) {
+                                      return InkWell(
+                                        child: taskItem( cubit.AllTASKS[index] , ToDoAppCubit.get(context) ,context  ),
 
-                                      return taskItem( cubit.alltasks[index] , ToDoAppCubit.get(context) ,context );
+                                        onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder:
+                                                (context)=> ShowSubTaskScreen( taskId : cubit.AllTASKS[index].taskId )));
+                                        },
+
+                                      );
                                     },
-                                    itemCount: cubit.alltasks.length,
+                                    itemCount: cubit.AllTASKS.length,
                                     separatorBuilder: (context ,index)=>
-                                    cubit.alltasks[index].status != status.remove.name ?
+                                    cubit.AllTASKS[index].status != status.remove.name ?
                                     SizedBox(height: 18,) : SizedBox(height: 1,),
                                   ),
 
@@ -110,14 +127,19 @@ class MyTasksScreen extends StatelessWidget {
                                         separatorBuilder: (context ,index)=> SizedBox(height: 20,),),*/
                                 ],
                               ),
-                            ) ,
+                            );
+                            } ,
+
                             fallback: (context)=>
-                                Center(child:
-                                CircularProgressIndicator(),
+                                Padding(
+                                  padding: const EdgeInsets.all(50.0),
+                                  child: Center(child:
+                                  CircularProgressIndicator(),
+                                  ),
                                 )
                         ),
 
-                        ConditionalBuilder(
+                      /*  ConditionalBuilder(
                             condition: cubit.subtasks.length >= 0   ,
                             builder: (context)=> Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20.0 ,horizontal: 8),
@@ -147,10 +169,10 @@ class MyTasksScreen extends StatelessWidget {
 
                                 ),
                                  )
-                        ),
+                        ),*/
                       ],
                     ),
-                  ),
+                  ) : Center(child: Text('No Task In This Day')),
 
 
                 ],
@@ -169,9 +191,11 @@ class MyTasksScreen extends StatelessWidget {
         });
   }
 
+  Widget taskItem(TaskModel model , ToDoAppCubit cubit ,context ) {
+   print('xxxx ${model.taskName}');
+   print('//// ${model.taskId}');
 
-
-  Widget taskItem(TaskModel model , ToDoAppCubit cubit ,context )=>  Padding(
+   return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child:
       model.status != status.remove.name ?
@@ -297,136 +321,13 @@ class MyTasksScreen extends StatelessWidget {
         ],
       ): SizedBox(height: 1,)
     //  Text('delete'),
-  ) ;
+  );
 
-
-
-  Widget subtaskItem(TaskModel submodel , ToDoAppCubit cubit ,context )=>  Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child:
-      submodel.status != status.remove.name ?
-      Stack(
-        alignment: AlignmentDirectional.centerStart,
-        children:
-        [
-          Container(
-            height: 130,
-            decoration: BoxDecoration(
-                color:  Colors.brown[50]  ,
-                borderRadius: BorderRadius.circular(20)
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0 , vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                        Text('${submodel.taskName }',
-                          style:TextStyle(fontWeight: FontWeight.bold , fontSize: 18),
-                          overflow: TextOverflow.ellipsis,),
-
-
-                        Text('Task Description : \n   ${submodel.taskDes}.',
-                          style:TextStyle(fontWeight: FontWeight.bold ),
-                          overflow: TextOverflow.ellipsis, ),
-                        Text(' Due Date : ${submodel.todateTask}', style:TextStyle(fontWeight: FontWeight.bold ),
-                          overflow: TextOverflow.ellipsis,),
-
-                        Text('Parent Task : ${submodel.taskParent}' , style:
-                        TextStyle(fontWeight: FontWeight.bold ),
-                          overflow: TextOverflow.ellipsis,)
-
-
-
-
-
-
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                          onTap: (){
-
-                            showDialog(
-                                context: context,
-                                builder: (context)=>
-                                    SimpleDialog(title: Text('Task '),
-                                      children: [
-                                        /*   SimpleDialogOption(onPressed: () {
-                                          print('Add SubTask');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> AddSubTaskScreen(submodel)));
-                                        }, child: Row(
-                                          children: [
-                                            Icon(Icons.note_add),
-                                            SizedBox(width: 5,),
-                                            Text('Add SubTask'),
-                                          ],
-                                        ),),*/
-                                        SimpleDialogOption(onPressed: () {
-                                          print('edit');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> EditSubTaskScreen(submodel)));
-                                        }, child: Row(
-                                          children: [
-                                            Icon(Icons.edit),
-                                            SizedBox(width: 5,),
-                                            Text('Edit'),
-                                          ],
-                                        ),),
-                                        SimpleDialogOption(onPressed: () {
-                                          print('delete');
-                                          cubit.deleteSubTask(submodel);
-                                          Navigator.pop(context);
-
-                                        }, child: Row(
-                                          children: [
-                                            Icon(Icons.delete),
-                                            SizedBox(width: 5,),
-
-                                            Text('delete'),
-                                          ],
-                                        ),),
-                                      ],
-                                    ));
-
-                          } ,
-                          child: Icon (Icons.more_vert)),
-
-                      InkWell(
-                          onTap: (){
-                            print('done');
-
-                            cubit.checkDonSubTask(submodel);
-
-                          },
-                          child:
-                          submodel.status == status.complete.name ?
-                          Icon(Icons.check_circle , color: Colors.green,) :
-                          Icon(Icons.check_circle_outline)
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ) ,
-          Container(width: 5,height: 60,
-            decoration: BoxDecoration(
-                color: Colors.deepPurple,
-                borderRadius: BorderRadius.circular(5)
-            ),),
-
-        ],
-      ): SizedBox(height: 5,)
-    //  Text('delete'),
-  ) ;
+  }
 }
+
+
+
 
 
 
