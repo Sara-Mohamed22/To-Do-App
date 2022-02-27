@@ -28,8 +28,8 @@ class MyTasksScreen extends StatelessWidget {
 
     cubit.getAllTasks();
     cubit.getSubTasks();
+    cubit.alltasks.length;
 
-    cubit.numofTasks ;
       return BlocConsumer<ToDoAppCubit,ToDoAppStates>(
         listener:(context ,state){
           if(state is ToDoAppLoadingState)
@@ -43,12 +43,11 @@ class MyTasksScreen extends StatelessWidget {
           print('length of All Task :  ${cubit.alltasks.length}');
           print('length of All SubTask :  ${cubit.subtasks.length}');
 
-
           return Scaffold(
 
             body:
          //   cubit.numofTasks == 0 && cubit.numofsubTasks ==0 ?
-            cubit.numofTasks == 0 ?
+            cubit.alltasks.length == 0 ?
 
             Center(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
