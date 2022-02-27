@@ -16,9 +16,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
     ToDoAppCubit d = ToDoAppCubit.get(context) ;
-    d.getUserData();
+      d.getUserData();
 
     var _formKey = GlobalKey<FormState>();
     return

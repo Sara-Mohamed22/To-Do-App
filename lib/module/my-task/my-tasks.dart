@@ -26,19 +26,28 @@ class MyTasksScreen extends StatelessWidget {
 
     ToDoAppCubit cubit = ToDoAppCubit.get(context);
 
-    return BlocConsumer<ToDoAppCubit,ToDoAppStates>(
-        listener:(context ,state){
 
+    cubit.numofTasks ;
+      return BlocConsumer<ToDoAppCubit,ToDoAppStates>(
+        listener:(context ,state){
+          if(state is ToDoAppLoadingState)
+            {
+              // cubit.getAllTasks();
+              // cubit.getSubTasks();
+            }
         } ,
         builder: (context ,state){
 
+          print('length of All Task :  ${cubit.alltasks.length}');
+          print('length of All SubTask :  ${cubit.subtasks.length}');
 
-        //  print('length ${cubit.alltasks.length}');
 
           return Scaffold(
 
             body:
-            cubit.numofTasks == 0 && cubit.numofsubTasks ==0 ?
+         //   cubit.numofTasks == 0 && cubit.numofsubTasks ==0 ?
+            cubit.numofTasks == 0 ?
+
             Center(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -89,9 +98,7 @@ class MyTasksScreen extends StatelessWidget {
                         ConditionalBuilder(
                          condition: cubit.alltasks.length > 0 ,
                         //   condition: state is !FilterTaskLoadingState ,
-
                             builder: (context) {
-                              print( '55 ${cubit.AllTASKS}');
                               return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20.0 ,horizontal: 8),
                               child: Column(
@@ -101,7 +108,7 @@ class MyTasksScreen extends StatelessWidget {
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (context , index) {
                                       return InkWell(
-                                        child: taskItem( cubit.AllTASKS[index] , ToDoAppCubit.get(context) ,context  ),
+                                        child: taskItem( cubit.AllTASKS[index] , ToDoAppCubit.get(context) , context  ),
 
                                         onTap: (){
                                             Navigator.push(context, MaterialPageRoute(builder:
@@ -185,15 +192,10 @@ class MyTasksScreen extends StatelessWidget {
           );
 
 
-
-
-
         });
   }
 
   Widget taskItem(TaskModel model , ToDoAppCubit cubit ,context ) {
-   print('xxxx ${model.taskName}');
-   print('//// ${model.taskId}');
 
    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),

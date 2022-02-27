@@ -29,8 +29,10 @@ class ToDoAppCubit extends Cubit<ToDoAppStates> {
 
   void getUserData() {
     emit(ToDoAppLoadingState());
-    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
-      model = UserModel.FromJson(value.data()!);
+   // FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+      FirebaseFirestore.instance.collection('users').doc(CashHelper.getData(key:'uId')).get().then((value) {
+
+        model = UserModel.FromJson(value.data()!);
 
       emit(AppGetUserSuccessfulState());
     }).catchError((e) {
@@ -115,7 +117,10 @@ int numofTasks =0 ;
     if(! alltasks.isEmpty)
       alltasks = [];
 
-    FirebaseFirestore.instance.collection('tasks').where('uid' , isEqualTo: uId).snapshots().listen((value) {
+   // FirebaseFirestore.instance.collection('tasks').where('uid' , isEqualTo: uId).
+    FirebaseFirestore.instance.collection('tasks').where('uid' , isEqualTo: CashHelper.getData(key:'uId')).
+
+    snapshots().listen((value) {
       alltasks = [];
 
       value.docs.forEach((element){
@@ -135,8 +140,6 @@ int numofTasks =0 ;
   }
 
 
-
-
   checkDoneTask(TaskModel model) {
 
     print('model ${model.taskId}');
@@ -144,7 +147,7 @@ int numofTasks =0 ;
     if (model.status == 'oncreate') {
       FirebaseFirestore.instance.collection('tasks').doc(model.taskId)
           .update({'status':status.complete.name }).then((value) {
-        emit(UpDateCompleteTaskSuccessfulState());
+           emit(UpDateCompleteTaskSuccessfulState());
       }).
       catchError((e) {
         print('error ${e.toString()}');
@@ -307,7 +310,10 @@ int numofTasks =0 ;
     if(! subtasks.isEmpty)
       subtasks = [];
 
-    FirebaseFirestore.instance.collection('subTasks').where('uid' , isEqualTo: uId ).snapshots().listen((value) {
+   // FirebaseFirestore.instance.collection('subTasks').where('uid' , isEqualTo: uId ).
+    FirebaseFirestore.instance.collection('subTasks').where('uid' , isEqualTo: CashHelper.getData(key:'uId') ).
+
+    snapshots().listen((value) {
       subtasks = [];
 
       value.docs.forEach((element){
@@ -386,14 +392,12 @@ int numofTasks =0 ;
   filterationFunc( DateTime dt)
   {
     emit(FilterTaskLoadingState());
-   // AllTASKS = [] ;
-
-    if(! AllTASKS.isEmpty)
-      AllTASKS = [];
 
     FirebaseFirestore.instance.collection('tasks').
-    where('uid' , isEqualTo: uId ).snapshots().listen((value) {
-      AllTASKS= [];
+   // where('uid' , isEqualTo: uId ).snapshots().listen((value) {
+      where('uid' , isEqualTo: CashHelper.getData(key:'uId') ).snapshots().listen((value) {
+
+        AllTASKS= [];
 
       value.docs.forEach((element){
         if(TaskModel.fromJson(element.data()).todateTask == DateFormat('yy-MM-dd').format(dt))
@@ -401,6 +405,7 @@ int numofTasks =0 ;
             AllTASKS.add(TaskModel.fromJson(element.data()));
           }
 
+        emit(FilterTaskSuccessfulState());
 
       });
 

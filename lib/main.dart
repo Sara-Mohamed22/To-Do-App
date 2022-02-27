@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
       child:MultiBlocProvider(
         providers: [
           // BlocProvider(create: (context)=> ToDoAppCubit()..getSubTasks()..getAllTasks()..getUserData()
-           BlocProvider(create: (context)=> ToDoAppCubit()..getSubTasks()..getAllTasks()
+           BlocProvider(create: (context)=> ToDoAppCubit()..getSubTasks()..getAllTasks()..getUserData()
     ),
           BlocProvider(create: (context)=> LoginCubit() ),
         ],
