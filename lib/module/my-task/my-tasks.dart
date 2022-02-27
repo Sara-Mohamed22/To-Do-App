@@ -26,6 +26,8 @@ class MyTasksScreen extends StatelessWidget {
 
     ToDoAppCubit cubit = ToDoAppCubit.get(context);
 
+    cubit.getAllTasks();
+    cubit.getSubTasks();
 
     cubit.numofTasks ;
       return BlocConsumer<ToDoAppCubit,ToDoAppStates>(
